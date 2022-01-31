@@ -4,15 +4,19 @@ import postgraphile from "postgraphile";
 const app = Express();
 
 app.use(
-  postgraphile("postgres://louislec@localhost:5432/test", "publ", {
-    watchPg: true,
-    graphiql: true,
-    pgDefaultRole: "demo_visitor",
-    ignoreRBAC: true,
-    jwtPgTypeIdentifier: "publ.jwt",
-    jwtSecret: "lizyvdcmkagc piaucg aiycg qpsiyf zcvdevq",
-    enhanceGraphiql: true,
-  })
+  postgraphile(
+    process.env.DATABASE_URL || "postgres://louislec@localhost:5432/test",
+    "publ",
+    {
+      watchPg: true,
+      graphiql: true,
+      pgDefaultRole: process.env.DATABASE_VISITOR || "demo_visitor",
+      ignoreRBAC: false,
+      jwtPgTypeIdentifier: "publ.jwt",
+      jwtSecret: "lizyvdcmkagc piaucg aiycg qpsiyf zcvdevq",
+      enhanceGraphiql: true,
+    }
+  )
 );
 
 app.listen(8007, () => {
